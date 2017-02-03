@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.indeema.microphonetest.ThreeGP.AmpParser;
 import com.indeema.microphonetest.ThreeGP.ThreeGPHelper;
 
 import java.io.File;
@@ -150,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (rawData != null) {
                 ThreeGPHelper.CreateAmrFile(rawData, mOutputFileName);
                 Log.d(TAG, "Create AMR file : size -> " + mOutputFileName.length());
+                AmpParser.ParseAmpData(rawData);
             }
 
 

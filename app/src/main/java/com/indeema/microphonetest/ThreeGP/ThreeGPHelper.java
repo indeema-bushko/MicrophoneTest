@@ -31,7 +31,7 @@ public class ThreeGPHelper {
     /**
      * A header block of bytes for .amr file.
      */
-    private static final byte[] AMR_MAGIC_HEADER = new byte[] {0x23, 0x21, 0x41, 0x4d, 0x52, 0x0a};
+    public static final byte[] AMR_MAGIC_HEADER = new byte[] {0x23, 0x21, 0x41, 0x4d, 0x52, 0x0a};
 
 
     /**
