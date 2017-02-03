@@ -17,9 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.indeema.microphonetest.AMR.ThreeGPHelper;
+import com.indeema.microphonetest.ThreeGP.ThreeGPHelper;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,7 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MediaRecorder mMediaRecorder;
     private MediaPlayer mMediaPlayer;
 
-    private String mFileName;
+    private String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+    private String mInputFileName;
+    private String mOutputFileName;
 
     private String[] permissions = new String[] { Manifest.permission.RECORD_AUDIO };
 
@@ -61,9 +62,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
-        mFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        mFileName += "/test_record.3gp";
-        Log.d(TAG, "Output audio file -> " + mFileName);
+//        filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        mInputFileName = filePath + "/test_record.3gp";
+        mOutputFileName = filePath + "/out_amr_file.amr";
+        Log.d(TAG, "Output audio file -> " + mInputFileName);
+        Log.d(TAG,"Output AMR file -> " + mOutputFileName);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mMediaRecorder.setOutputFile(mFileName);
+        mMediaRecorder.setOutputFile(mInputFileName);
         try {
             mMediaRecorder.prepare();
         } catch (IOException e) { e.printStackTrace(); }
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startPlay() {
         mMediaPlayer = new MediaPlayer();
         try {
-            mMediaPlayer.setDataSource(mFileName);
+            mMediaPlayer.setDataSource(mInputFileName);
             mMediaPlayer.prepare();
             mMediaPlayer.start();
         } catch (IOException e) { e.printStackTrace(); }
@@ -134,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void convert() {
-        File file = new File(mFileName);
+        File file = new File(mInputFileName);
         if (file == null)
             return;
         try {
@@ -143,11 +146,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             FileInputStream fileInputStream = new FileInputStream(file);
             fileInputStream.read(byteArray);
 
-            ThreeGPHelper.ParseThreeGPFile(byteArray);
+            byte[] rawData = ThreeGPHelper.ExtractRawDataBlockByType(byteArray, ThreeGPHelper.HEADER_TYPE_AMR);
+            if (rawData != null) {
+                ThreeGPHelper.CreateAmrFile(rawData, mOutputFileName);
+                Log.d(TAG, "Create AMR file : size -> " + mOutputFileName.length());
+            }
 
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArray);
+
             Log.d(TAG, "Convert : bytes -> " + byteArray.length);
-
         } catch (IOException e) { e.printStackTrace(); }
     }
 

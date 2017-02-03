@@ -1,4 +1,4 @@
-package com.indeema.microphonetest.AMR;
+package com.indeema.microphonetest.ThreeGP;
 
 /**
  * Created by Kostiantyn Bushko on 2/2/17.

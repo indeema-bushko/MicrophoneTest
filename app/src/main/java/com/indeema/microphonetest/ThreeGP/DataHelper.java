@@ -1,4 +1,4 @@
-package com.indeema.microphonetest.AMR;
+package com.indeema.microphonetest.ThreeGP;
 
 import java.io.ByteArrayInputStream;
 
