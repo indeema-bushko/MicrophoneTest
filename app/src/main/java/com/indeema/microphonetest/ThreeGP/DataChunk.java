@@ -17,8 +17,8 @@ public class DataChunk {
     public int setData(byte[] data, int offset) {
         char[] chars = new char[] { (char)data[offset + 4], (char)data[offset + 5], (char)data[offset + 6], (char)data[offset + 7] };
         mTypeName = new String(chars);
-        mSize = (int)DataHelper.readUint32(data, offset);
-        mType = (int)DataHelper.readUint32(data, offset + 4);
+        mSize = (int)DataHelper.readUInt32(data, offset);
+        mType = (int)DataHelper.readUInt32(data, offset + 4);
         mData = new byte[mSize];
         System.arraycopy(data, offset, mData, 0, mSize);
         return offset + mSize;

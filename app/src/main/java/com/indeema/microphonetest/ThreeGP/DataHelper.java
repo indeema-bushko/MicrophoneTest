@@ -10,7 +10,7 @@ public final class DataHelper {
 
     private DataHelper() {}
 
-    public static long readUint32(ByteArrayInputStream bis) {
+    public static long readUInt32(ByteArrayInputStream bis) {
         long result = 0;
         result += ((long) readUInt16(bis)) << 16;
         result += readUInt16(bis);
@@ -24,7 +24,7 @@ public final class DataHelper {
         return (int) result;
     }
 
-    public static long readUint32(byte[] data, int offset) {
+    public static long readUInt32(byte[] data, int offset) {
         long result = 0;
         result += readUInt16(data, offset) << 16;
         result += readUInt16(data, offset + 2);

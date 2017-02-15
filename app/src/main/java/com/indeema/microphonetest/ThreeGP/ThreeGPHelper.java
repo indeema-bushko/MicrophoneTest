@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Helper class for work with 3gp format.
+ * Helper class for work with 3gp file format.
  *
  * Created by Kostiantyn Bushko on 2/2/17.
  */
@@ -35,7 +35,7 @@ public class ThreeGPHelper {
 
 
     /**
-     * Extract block data for specific type.
+     * Extract block data for the specific type.
      * @param inputByteArray
      * @return
      */
@@ -45,7 +45,7 @@ public class ThreeGPHelper {
         byte[] dataChunk = null;
         while (cursor < inputByteArray.length) {
             if (count == headerType.length) {
-                int size = (int)DataHelper.readUint32(inputByteArray, (cursor - headerType.length - 4));
+                int size = (int)DataHelper.readUInt32(inputByteArray, (cursor - headerType.length - 4));
                 size -= HEADER_SIZE;
                 dataChunk = new byte[size];
                 System.arraycopy(inputByteArray, cursor, dataChunk, 0, size);
@@ -64,7 +64,7 @@ public class ThreeGPHelper {
     }
 
     /**
-     * Create AMR file from raw data and save to disk.
+     * Create AMR file from raw data and save on the disk.
      *
      * @param rawData an byte array contain raw data.
      * @param filePath a full path with file name and .amr extension when data should be stored.
