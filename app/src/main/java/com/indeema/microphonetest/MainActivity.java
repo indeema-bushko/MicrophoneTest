@@ -18,11 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.indeema.microphonetest.ThreeGP.AmpParser;
+import com.indeema.microphonetest.ThreeGP.AudioFrame;
 import com.indeema.microphonetest.ThreeGP.ThreeGPHelper;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
     private String mInputFileName;
     private String mOutputFileName;
+    private String mTestAMRFile;
 
     private String[] permissions = new String[] { Manifest.permission.RECORD_AUDIO };
 
@@ -66,8 +70,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         mInputFileName = filePath + "/test_record.3gp";
         mOutputFileName = filePath + "/out_amr_file.amr";
+        mTestAMRFile = filePath + "/test_amr_file.amr";
         Log.d(TAG, "Output audio file -> " + mInputFileName);
         Log.d(TAG,"Output AMR file -> " + mOutputFileName);
+        Log.d(TAG, "Test AMR file -> " + mTestAMRFile);
     }
 
     @Override
@@ -151,7 +157,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (rawData != null) {
                 ThreeGPHelper.CreateAmrFile(rawData, mOutputFileName);
                 Log.d(TAG, "Create AMR file : size -> " + mOutputFileName.length());
-                AmpParser.ParseAmpData(rawData);
+                List<AudioFrame> audioFrameList = AmpParser.ParseAmpData(rawData);
+
+                List<AudioFrame>audioFrameList1 = new ArrayList<>();
+                for (int i = 0; i < audioFrameList.size(); i++) {
+                    if (i % 2 == 0 ) {
+                        audioFrameList1.add(audioFrameList.get(i));
+                    }
+                }
+
+                byte[] ampRawData = AmpParser.ConvertAudioFramesToAmpRawData(audioFrameList1);
+                ThreeGPHelper.CreateAmrFile(ampRawData, mTestAMRFile);
+                Log.d(TAG, "Create AMR file : size -> " + mTestAMRFile.length());
             }
 
 

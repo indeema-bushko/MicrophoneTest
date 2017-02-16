@@ -18,7 +18,7 @@ public final class AmpParser {
     /**
      * Parse AMP data byte array to extract frames.</br>
      *
-     * @param ampByteArray a byte array contains data from AMP file includes AMP header.
+     * @param ampByteArray a byte array contains data from AMP file.
      * @return list of audio frames.
      */
     public static final List<AudioFrame> ParseAmpData(byte[] ampByteArray) {
@@ -46,10 +46,39 @@ public final class AmpParser {
             AudioFrame frame = new AudioFrame(frameSize - 1);
             frame.frameHeader = ampByteArray[cursor];
             System.arraycopy(ampByteArray, cursor + 1, frame.frameData, 0, frameSize - 1);
-
             cursor += frameSize;
+
+            audioFrameList.add(frame);
         }
 
         return audioFrameList;
+    }
+
+    public static byte[] ConvertAudioFramesToAmpRawData(List<AudioFrame> audioFrameList) {
+        if (audioFrameList == null || audioFrameList.isEmpty())
+            throw new IllegalArgumentException("The list of the audio frames can't be empty or null");
+
+        /**
+         * Obtain total size of the raw data for list of frames.
+         */
+        int size = 0;
+        for (int i = 0; i < audioFrameList.size(); i++)
+            size += audioFrameList.get(i).getFrameSize() + 1;
+
+        /**
+         * Create byte buffer depend on the size of the total raw data.
+         */
+        byte[] rawData = new byte[size];
+        int cursor = 0;
+        for (int i = 0; i < audioFrameList.size(); i++) {
+            AudioFrame audioFrame = audioFrameList.get(i);
+            rawData[cursor] = audioFrame.frameHeader;
+            cursor++;
+            System.arraycopy(audioFrameList.get(i).frameData, 0, rawData, cursor, audioFrame.getFrameSize());
+            cursor += audioFrame.getFrameSize();
+            Log.d(TAG,"Convert audio frame to raw data : cursor = " + cursor);
+        }
+
+        return rawData;
     }
 }

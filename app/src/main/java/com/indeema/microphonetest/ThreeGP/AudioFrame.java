@@ -13,4 +13,10 @@ public class AudioFrame {
     public AudioFrame(int frameSize) {
         frameData = new byte[frameSize];
     }
+
+    public int getFrameSize() {
+        if (frameData == null)
+            return -1;
+        return frameData.length;
+    }
 }
