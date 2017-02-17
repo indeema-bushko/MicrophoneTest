@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.indeema.microphonetest.ThreeGP.AmpParser;
+import com.indeema.microphonetest.ThreeGP.AmrParser;
 import com.indeema.microphonetest.ThreeGP.AudioFrame;
 import com.indeema.microphonetest.ThreeGP.ThreeGPHelper;
 
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button mStartRecordButton;
     private Button mPlayButton;
     private Button mConvert;
+
 
     private boolean isRecord = false;
     private boolean isPlay = false;
@@ -157,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (rawData != null) {
                 ThreeGPHelper.CreateAmrFile(rawData, mOutputFileName);
                 Log.d(TAG, "Create AMR file : size -> " + mOutputFileName.length());
-                List<AudioFrame> audioFrameList = AmpParser.ParseAmpData(rawData);
+                List<AudioFrame> audioFrameList = AmrParser.ParseAmrData(rawData);
 
                 List<AudioFrame>audioFrameList1 = new ArrayList<>();
                 for (int i = 0; i < audioFrameList.size(); i++) {
@@ -166,8 +167,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
 
-                byte[] ampRawData = AmpParser.ConvertAudioFramesToAmpRawData(audioFrameList1);
-                ThreeGPHelper.CreateAmrFile(ampRawData, mTestAMRFile);
+                byte[] amrRawData = AmrParser.ConvertAudioFramesToAmrRawData(audioFrameList1);
+                ThreeGPHelper.CreateAmrFile(amrRawData, mTestAMRFile);
                 Log.d(TAG, "Create AMR file : size -> " + mTestAMRFile.length());
             }
 

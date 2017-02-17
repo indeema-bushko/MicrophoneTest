@@ -6,29 +6,40 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <com.indeema.microphonetest.VisualizerView
+        android:id="@+id/myvisualizerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
     <TextView
         android:id="@+id/tv_action_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="--"/>
+        android:text="--"
+        android:layout_weight="0"/>
 
     <Button
         android:id="@+id/bt_start_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start Record"/>
+        android:text="Start Record"
+        android:layout_weight="0"/>
 
     <Button
         android:id="@+id/bt_play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Play"/>
+        android:text="Play"
+        android:layout_weight="0"/>
 
     <Button
         android:id="@+id/bt_convert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Convert"/>
+        android:text="Convert"
+        android:layout_weight="0"
+        android:visibility="gone"/>
 
 </LinearLayout>

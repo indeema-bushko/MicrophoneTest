@@ -11,7 +11,7 @@ public final class Constants {
     /**
      * AMR available bit rates for frame. The array index corresponds to CMR (Code Mode Request).
      */
-    public static float AMP_NB_BITRATE[] = new float[] {
+    public static float AMR_NB_BITRATE[] = new float[] {
 
             4.75f,  // Mode 0: Encodes at 4.75 kbit/s
             5.15f,  // Mode 1: Encodes at 5.15 kbit/s
@@ -26,7 +26,7 @@ public final class Constants {
     /**
      * Frame size in bytes. The index of array corresponds to CMR (Code Mode Request).
      */
-    public static int AMP_NB_FRAME_SIZE[] = new int[] {
+    public static int AMR_NB_FRAME_SIZE[] = new int[] {
             13, // CRM: 0; MODE: AMR 4.75 13
             14, // CRM: 1; MODE: AMR 5.15 14
             16, // CRM: 2; MODE: AMR 5.9 16
